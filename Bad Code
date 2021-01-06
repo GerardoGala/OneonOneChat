@@ -1,0 +1,28 @@
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+
+        // Read the Admin status
+        FirebaseDatabase.getInstance().getReference().child("isAdminOnline")
+            .addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    String isAdminOnline = snapshot.getValue().toString();
+                    if (isAdminOnline.equals("yes")) {
+                        mBinding.isAdminOnline.setText("Miss Science Teacher Divine is online");
+                        mBinding.isAdminOnline.setVisibility(View.VISIBLE);
+                    } else {
+                        mBinding.isAdminOnline.setVisibility(View.INVISIBLE);
+                    }
+                }
+               @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                }
+            });
+
+        updateUI(currentUser);
+    }
+
+                
